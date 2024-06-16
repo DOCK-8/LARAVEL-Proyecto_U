@@ -1,0 +1,8 @@
+#header{
+  display: flex;
+  margin: 0 auto;
+  background: rgb(12,32,24,0.5);
+}
+p{
+  color: red;
+}

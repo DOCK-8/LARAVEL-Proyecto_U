@@ -1,0 +1,41 @@
+# Los archivos docker-compose.yml son versionados, lo que significa que es muy importante indicar la versión de las instrucciones que queremos darle.
+version: "3.3"
+
+# Servidor nginx
+services:
+  web:
+# versión
+    image: nginx:alpine
+# Puerto 8080 
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx:/etc/nginx/conf.d/
+    depends_on:
+      - php-web
+      - mysql-web
+
+# Configuración de php-fpm
+  php-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www/html
+
+# Configuración de mysql
+  mysql-web:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: classroom
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-base:/var/lib/mysql
+volumes:
+  mysql-base:
